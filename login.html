@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			//mui.plusReady();
+		
+			
+			function login(){
+				var username = mui("#username")[0].value; 
+				var password = mui("#password")[0].value;
+				
+				mui.ajax('http://127.0.0.1:8080/users/login',{
+					data:{
+						name:username,
+						password:password,
+						
+					},
+					
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+						              
+					success:function(data){
+						
+						if(data!=''&&data!=null){
+							alert(data);
+							plus.storage.setItem("user_token",data);
+							mui.openWindow({
+								url:'index.html'
+							})
+						}else{
+							alert("用户名或密码错误");
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						
+						//异常处理；
+						console.log(errorThrown);
+					}
+				})
+			}
+			
+			
+			
+			
+		</script>
+		<form class="mui-input-group">
+		    <div class="mui-input-row">
+		        <label>用户名</label>
+		    <input type="text" class="mui-input-clear" placeholder="请输入用户名" id="username">
+		    </div>
+		    <div class="mui-input-row">
+		        <label>密码</label>
+		        <input type="password" class="mui-input-password" placeholder="请输入密码" id="password">
+		    </div>
+		    <div class="mui-button-row">
+		        <button type="button" class="mui-btn mui-btn-primary" onclick="login()">确认</button>
+		        <button type="button" class="mui-btn mui-btn-danger" onclick="login1()">取消</button>
+		    </div>
+		</form>
+	</body>
+
+</html>
