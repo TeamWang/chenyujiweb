@@ -12,14 +12,18 @@
 		<script src="js/mui.min.js"></script>
 		<script type="text/javascript">
 			mui.init();
-			//mui.plusReady();
-		
+			mui.plusReady(function(){
+				/*49.233.79.220*/
+				plus.storage.setItem("url",'http://192.168.21.1:8080/');
+			});
+			
+			
 			
 			function login(){
 				var username = mui("#username")[0].value; 
 				var password = mui("#password")[0].value;
-				
-				mui.ajax('http://127.0.0.1:8080/users/login',{
+				alert(plus.storage.getItem('url')+'admin/login');
+				mui.ajax(plus.storage.getItem('url')+'admin/login',{
 					data:{
 						name:username,
 						password:password,
@@ -41,14 +45,21 @@
 							alert("用户名或密码错误");
 						}
 					},
-					error:function(xhr,type,errorThrown){
+					/*error:function(xhr,type,errorThrown){
 						
 						//异常处理；
 						console.log(errorThrown);
-					}
+					}*/
 				})
 			}
-			
+			/**
+			 * 前往注册页面
+			 */
+			function register (){
+				mui.openWindow({
+            		url: './register.html', //通过URL传参
+        		})
+			}
 			
 			
 			
@@ -64,7 +75,7 @@
 		    </div>
 		    <div class="mui-button-row">
 		        <button type="button" class="mui-btn mui-btn-primary" onclick="login()">确认</button>
-		        <button type="button" class="mui-btn mui-btn-danger" onclick="login1()">取消</button>
+		        <button type="button" class="mui-btn mui-btn-danger" onclick="register()">注册</button>
 		    </div>
 		</form>
 	</body>
