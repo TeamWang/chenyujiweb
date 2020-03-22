@@ -6,26 +6,32 @@
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/gloable.css" rel="stylesheet" />
 	</head>
+	
 
 	<body>
+		<header class="mui-bar mui-bar-nav" style="background-color: #007AFF;">
+			<h1 id="title" class="mui-title">晨宇记</h1>
+		</header>
 		<script src="js/mui.min.js"></script>
 		<script type="text/javascript">
 			mui.init();
 			mui.plusReady(function(){
 				/*49.233.79.220*/
-				plus.storage.setItem("url",'http://192.168.21.1:8080/');
+				
+				plus.storage.setItem("url",'http://192.168.126.1:8080/');
 			});
 			
 			
 			
 			function login(){
-				var username = mui("#username")[0].value; 
+				var login_id = mui("#login_id")[0].value; 
 				var password = mui("#password")[0].value;
-				alert(plus.storage.getItem('url')+'admin/login');
+				
 				mui.ajax(plus.storage.getItem('url')+'admin/login',{
 					data:{
-						name:username,
+						login_id:login_id,
 						password:password,
 						
 					},
@@ -35,21 +41,18 @@
 						              
 					success:function(data){
 						
-						if(data!=''&&data!=null){
-							alert(data);
-							plus.storage.setItem("user_token",data);
+						if(data=="success"){
+							
+							
 							mui.openWindow({
-								url:'index.html'
+								url:'parent.html',
+								
 							})
 						}else{
 							alert("用户名或密码错误");
 						}
 					},
-					/*error:function(xhr,type,errorThrown){
-						
-						//异常处理；
-						console.log(errorThrown);
-					}*/
+					
 				})
 			}
 			/**
@@ -58,16 +61,18 @@
 			function register (){
 				mui.openWindow({
             		url: './register.html', //通过URL传参
-        		})
+				})
 			}
 			
 			
 			
 		</script>
-		<form class="mui-input-group">
+		
+		
+		<form class="mui-input-group" style="top: 45px;">
 		    <div class="mui-input-row">
 		        <label>用户名</label>
-		    <input type="text" class="mui-input-clear" placeholder="请输入用户名" id="username">
+		    <input type="text" class="mui-input-clear" placeholder="请输入登录账号" id="login_id">
 		    </div>
 		    <div class="mui-input-row">
 		        <label>密码</label>

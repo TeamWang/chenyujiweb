@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" style="background-color: #007AFF;">
+		<h1 id="title" class="mui-title">晨宇记</h1>
+	</header>
+        
+        <nav class="mui-bar mui-bar-tab">
+            <a id="defaultTab" class="mui-tab-item mui-active" href="tab-webview-subpage-about.html">
+                <span class="mui-icon mui-icon-home"></span>
+                <span class="mui-tab-label">详情</span>
+            </a>
+            <a class="mui-tab-item" href="tab-webview-subpage-chat.html">
+                <span class="mui-icon mui-icon-email"><span class="mui-badge">9</span></span>
+                <span class="mui-tab-label">添加</span>
+            </a>
+            <a class="mui-tab-item" href="tab-webview-subpage-setting.html">
+                <span class="mui-icon mui-icon-gear"></span>
+                <span class="mui-tab-label">设置</span>
+            </a>
+        </nav>
+        <script src="js/mui.min.js"></script>
+        <script type="text/javascript" charset="utf-8">
+        mui.init({
+		    subpages:[{
+		      url:"login.html",//子页面HTML地址，支持本地地址和网络地址
+		      id:"login.html",//子页面标志
+		      styles:{
+		        top:'45px',//mui标题栏默认高度为45px；
+        		bottom:'0px'//默认为0px，可不定义； 
+		      },
+		      extras:{}//额外扩展参数
+		    }]
+		  });
+            mui.plusReady(function(){
+                var pages = ["index.html","pages/add/add_in.html","register.html"];
+                var arr = document.getElementsByClassName("mui-tab-item")
+                var styles = {
+                    top:"45px",
+                    bottom:"51px"
+                }
+                var pageArr = [];
+                var title=document.getElementById('title');
+                var slef = plus.webview.currentWebview();
+                for(var i=0; i<arr.length; i++){
+                    // 有几个选项卡，需要创建几个子页面
+                    var page = plus.webview.create(pages[i],pages[i],styles);
+                    pageArr.push(page);
+                    !function(i){
+                        arr[i].addEventListener("tap",function(){
+                            // 让当前页面(i)显示，不是当前页面隐藏
+                            for(var j=0; j<pageArr.length; j++){
+                                if(j!=i) pageArr[j].hide();
+                                else pageArr[j].show();
+                            }
+                            // 设置标题
+                            title.innerHTML = this.querySelector('.mui-tab-label').innerHTML;
+                            /* 让新创建的webview，追加合并到当前的窗口上。合并成一个窗口。
+                             * 目的：将父子窗口合并成一个页面，实现同开同关的效果。 避免点击返回安监室，子页面先关闭，而父页面的头部和尾部没有关闭的BUG。
+                             */
+                            slef.append(pageArr[i]);
+                            
+                        })
+                    }(i);
+                }
+                // 默认触发第0个选项卡的tap事件。
+                mui.trigger(arr[0],"tap");
+            });
+        </script>
+    </body>
+
+	
+	
+
+</html>

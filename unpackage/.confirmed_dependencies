@@ -1,13 +1,35 @@
 {
-  "login.html": {
-    "refer": [
-      "register.html"
-    ],
-    "resources": []
-  },
-  "register.html": {
-    "refer": [
-      "login.html"
-    ]
-  }
+	"login.html": {
+		"refer": [
+			"register.html",
+			"index.html",
+			"parent.html"
+		],
+		"resources": []
+	},
+	"register.html": {
+		"refer": [
+			"login.html"
+		],
+		"resources": []
+	},
+	"parent.html": {
+		"resources": [
+			"login.html",
+			"index.html"
+		],
+		"refer": [
+			"login.html",
+			"index.html",
+			"register.html",
+			"pages/add/add_in.html"
+		]
+	},
+	"index.html": {
+		"refer": [
+			"register.html",
+			"login.html"
+		],
+		"resources": []
+	}
 }

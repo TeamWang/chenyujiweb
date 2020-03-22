@@ -114,14 +114,16 @@
 					"xxhdpi": ""
 				}
 			}
-		}
+		},"adid":"127461190206"
 	},"fullscreen":false,
 	"dependencies": {
 		"pages": {
 			"login.html": {
 				"resources": [],
 				"refer": [
-					"register.html"
+					"register.html",
+					"index.html",
+					"parent.html"
 				],
 				"priority": 0
 			},
@@ -131,11 +133,29 @@
 					"login.html"
 				],
 				"priority": 0
+			},
+			"parent.html": {
+				"resources": [
+					"login.html",
+					"index.html"
+				],
+				"refer": [
+					"register.html",
+					"pages/add/add_in.html"
+				],
+				"priority": 0
+			},
+			"index.html": {
+				"resources": [],
+				"refer": [
+					"register.html",
+					"login.html"
+				],
+				"priority": 0
 			}
 		},
 		"idle": {
 			"resources": [
-				"index.html",
 				"js/mui.min.js",
 				"fonts/mui.ttf",
 				"css/mui.min.css",
