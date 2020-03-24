@@ -12,64 +12,134 @@
 	<body>
 		<script src="../../js/mui.min.js"></script>
 		<script type="text/javascript">
-			mui.init()
+			mui.init();
+			
+			
 		</script>
 		
 		
-<span class="mui-icon iconfont icon-gouwu"></span>
-<span class="mui-tab-label">购物</span>
+
 <div class="mui-content"> 
             <ul class="mui-table-view mui-grid-view mui-grid-9" style="background-color: #B6B6B6;">
                  <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-                    <a href="#">  
-                         <span class="mui-icon mui-icon-home"></span>  
-                         <div class="mui-media-body">Home</div>
+                    <a href="java:script" onclick="add()">  
+                         <span class="mui-icon iconfont icon-gouwu"></span>  
+                         <div class="mui-media-body">购物</div>
                     </a>
                  </li>  
                 <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
                     <a href="#">  
-                         <span class="mui-icon mui-icon-email"><span class="mui-badge">5</span></span>  
-                         <div class="mui-media-body">Email</div>
+                         <span class="mui-icon iconfont icon-yinshi"><span class="mui-badge">5</span></span>  
+                         <div class="mui-media-body">饮食</div>
                     </a>
                 </li>  
                 <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
                     <a href="#">  
-                         <span class="mui-icon mui-icon-chatbubble"></span>  
-                         <div class="mui-media-body">Chat</div>
+                         <span class="mui-icon iconfont icon-jiaotong"></span>  
+                         <div class="mui-media-body">交通</div>
                     </a>
                 </li>  
-                <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-                    <a href="#">  
-                         <span class="mui-icon mui-icon-location"></span>  
-                         <div class="mui-media-body">location</div>
-                    </a>
-                </li>  
-                <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-                    <a href="#">  
-                         <span class="mui-icon mui-icon-search"></span>  
-                         <div class="mui-media-body">Search</div>
-                    </a>
-                </li>  
-                <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-                    <a href="#">  
-                         <span class="mui-icon mui-icon-phone"></span>  
-                         <div class="mui-media-body">Phone</div>
-                    </a>
-                </li> 
-                <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-                    <a href="#">  
-                         <span class="mui-icon mui-icon-gear"></span>  
-                         <div class="mui-media-body">Setting</div>
-                    </a>
-                </li>  
-                <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-                    <a href="#">  
-                         <span class="mui-icon mui-icon-more"></span>  
-                         <div class="mui-media-body">more</div>
-                    </a>
-                </li>  
+                
             </ul>
         </div>
 	</body>
+	<!-- <a href="#popover" id="openPopover" class="mui-btn mui-btn-primary mui-btn-block">打开弹出菜单</a>
+	<div id="popover" class="mui-popover">
+	  <ul class="mui-table-view">
+	    <li class="mui-table-view-cell"><a href="#">Item1</a></li>
+	    <li class="mui-table-view-cell"><a href="#">Item2</a></li>
+	    <li class="mui-table-view-cell"><a href="#">Item3</a></li>
+	    <li class="mui-table-view-cell"><a href="#">Item4</a></li>
+	    <li class="mui-table-view-cell"><a href="#">Item5</a></li>
+	  </ul>
+	</div> -->
+	<div id="sheet1" class="mui-popover mui-popover-bottom mui-popover-action ">
+		<form class="mui-input-group">
+		    <div class="mui-input-row">
+		        <label>消费描述</label>
+		    <input type="text" class="mui-input-clear" placeholder="消费描述">
+		    </div>
+		    <div class="mui-input-row">
+		        <label>消费金额</label>
+		        <input type="text" class="mui-input-password" placeholder="消费金额">
+		    </div>
+			<div class="mui-input-row">
+				<h1 class="mui-title">上传照片</h1>
+				<button onclick="headImage()" class=" mui-icon-right-nav mui-pull-right mui-icon mui-icon-camera">相册</button>
+				<button onclick="getImage()" class=" mui-icon-right-nav mui-pull-right mui-icon mui-icon-camera">拍照</button>
+				<!-- <a class="mui-icon-right-nav mui-pull-right">
+					<span onclick="headImage()" id="headImage" class="mui-icon mui-icon-camera"></span>
+				</a> -->
+				<!-- <a class="mui-icon-right-nav mui-pull-right">
+					<span onclick="tt()" id="uploadImage" class="mui-icon mui-icon-upload"></span>
+				</a> -->
+				
+			</div>
+			<div class="mui-content" style="background-color:#fff">
+			            <!-- 图片容器 -->
+			            <ul id="imgs" class="mui-table-view mui-grid-view">
+			                <li class="mui-table-view-cell mui-media mui-col-xs-4">
+			                    <img class="mui-media-object" src="images/60x60.gif">
+			                    <span class="mui-icon mui-icon-trash deleteBtn" onclick="deleteImg(event)"></span>
+			                </li>
+			                 
+			            </ul>
+			        </div>
+			
+		    <div class="mui-button-row">
+		        <button type="button" class="mui-btn mui-btn-primary" >确认</button>
+		        <button type="button" class="mui-btn mui-btn-danger" >取消</button>
+		    </div>
+			
+			
+		</form>
+	    <!-- 可选择菜单 -->
+	    <!-- <ul class="mui-table-view">
+	      <li class="mui-table-view-cell">
+	        <a href="#">拍照</a>
+	      </li>
+	      <li class="mui-table-view-cell">
+	        <a href="#">从相机选取</a>
+	      </li>
+	    </ul> -->
+	    
+	</div>
+	
+	<script>
+		function add(){
+			
+		mui('#sheet1').popover('toggle');
+		}
+		
+		function headImage(){
+			
+			 galleryImg(); /*打开相册*/
+		}
+		// 从相册中选择图片   
+		            function galleryImg() {
+						
+		                // 从相册中选择图片  
+		                plus.gallery.pick(function(e) {
+		                    for (var i in e.files) {
+		                        var fileSrc = e.files[i];
+		                        setFile(fileSrc);
+		                        setHtml(fileSrc);
+		                    }
+		                }, function(e) {
+		                    console.log("取消选择图片");
+		                }, {
+		                    filter: "image",
+		                    multiple: true,
+		                    //maximum: 5,
+		                    system: false,
+		                    onmaxed: function() {
+		                        plus.nativeUI.alert('最多只能选择5张图片');
+		                    }
+		                });
+		            }
+		
+		
+		
+	</script>
 
 </html>

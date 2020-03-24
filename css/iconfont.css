@@ -11,7 +11,30 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-yinshi:before {
+  content: "\e800";
+}
+
+.icon-jiaotong:before {
+  content: "\e634";
+}
+
+.icon-quanzi:before {
+  content: "\e603";
+}
+
+.icon-icon-test:before {
+  content: "\e61e";
+}
+
+.icon-wodedangxuan:before {
+  content: "\e608";
+}
+
+.icon-xiangqing:before {
+  content: "\e654";
+}
+
 .icon-gouwu:before {
   content: "\e621";
 }
-
