@@ -67,11 +67,14 @@
 			    <label>具体描述</label>
 			<input id="bill_content" type="text" class="mui-input-clear" placeholder="消费描述">
 			</div>
-			<div class="mui-input-row">
+			<div class="mui-button-row">
+				
+				    
 				<!-- <button id="cameraImage" class=" mui-icon-right-nav mui-icon mui-icon-camera">照相机</button>
 				<button id="phoneImage" class=" mui-icon-right-nav mui-icon mui-icon-camera">本地照片</button> -->
-				<button type="button" class="mui-btn mui-btn-danger" onclick="back()">取消</button>&nbsp;
 				<button type="button" class="mui-btn mui-btn-primary" onclick="addBillSimple()">确认</button>&nbsp;
+				<button type="button" class="mui-btn mui-btn-danger" onclick="back()">取消</button>&nbsp;
+				
 				
 				<button onclick="gotoAddDetailBill()" type="button" class="mui-btn" >详细录入</button>&nbsp;&nbsp;&nbsp;
 			    <!-- <span id="headImage" class="mui-icon mui-icon-camera">上传照片</span> -->
@@ -112,11 +115,13 @@
 					bill_amount:mui("#bill_amount")[0].value,
 					bill_content:mui("#bill_content")[0].value,
 					login_id:plus.storage.getItem('login_id'),
-					bill_type_id:plus.storage.getItem('bill_type_id'),
+					bill_type_id:plus.storage.getItem('bill_type_id')
+					},
 					
 					type:'post',//HTTP请求类型
 					timeout:10000,//超时时间设置为10秒；
 					success:function(data){
+						alert(data.status)
 						if(data.status=="success"){
 							alert("录入账单成功");
 							mui('#sheet1').popover('toggle');
@@ -126,7 +131,6 @@
 						}
 					}
 					
-				},
 			})
 		}
 		
