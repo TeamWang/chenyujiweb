@@ -19,8 +19,9 @@
 			mui.init();
 			mui.plusReady(function(){
 				/*49.233.79.220*/
-				
+				/* 192.168.126.1 */
 				plus.storage.setItem("url",'http://192.168.126.1:8080/');
+				//plus.storage.setItem("url",'http://49.233.79.220:8080/');
 			});
 			
 			
@@ -41,8 +42,8 @@
 						              
 					success:function(data){
 						
-						if(data=="success"){
-							
+						if(data.status=="success"){
+							plus.storage.setItem("login_id",data.login_id);
 							
 							mui.openWindow({
 								url:'parent.html',

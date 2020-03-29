@@ -17,34 +17,119 @@
 
 <body>
 	
-	<!--<header class="mui-bar mui-bar-nav" style="background-color: #007AFF;">
-		<h1 class="mui-title">晨宇记</h1>
-	</header>-->
-	
-	
-	<div class="mui-card">
-	<!--页眉，放置标题-->
-	<div class="mui-card-header">记账记录：麻辣香锅20</div>
-	<!--内容区-->
-	<div class="mui-card-content">
-		<div class="mui-card-header mui-card-media" style="height:40vw;background-image:url(images/1.jpg)"></div>
+	<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+		<div class="mui-scroll" id="con">
+			
+		</div>
 	</div>
-	<!--页脚，放置补充信息或支持的操作-->
-	<div class="mui-card-footer">详情</div>
-	</div>
+	<script src="../../js/mui.js"></script>
+	<script src="https://cdn.staticfile.org/jquery/3.1.1/jquery.min.js"></script>
 	
-	<div class="mui-card gp">
+	<script type="text/javascript">
+		var pageStart = 0;//开始数据条数
+		 var pageSize = 3;//每页显示条数
+		 var startIndex=0;
+		 var page = 1;
+		 var rows = 5;
+		 var isHasData = false;
+		mui.init({
+			
+			pullRefresh:{
+				container:"#refreshContainer",//下拉容器表标识
+				down:{
+					callback:downRefresh//必写，刷新函数
+				},
+				up:{
+					contentover:"正在加载。。。",
+					contentnomore:"没有更多数据",
+					callback:upRefresh
+				}
+			}
+		});
+		function downRefresh(){
+			//console.log("ss");
+			//alert("55")
+			//刷新的数据加载动作，通过第三方数据传输后进行加载
+			location.reload();
+			//停止刷新
+			mui("#refreshContainer").pullRefresh().endPulldownToRefresh()
+			
+		}
+		function upRefresh(){
+			//console.log("ss");
+			setTimeout(function(){
+				mui.ajax(plus.storage.getItem('url')+'bill/getBillByLoginId',{
+					data:{
+						login_id:plus.storage.getItem('login_id').toString(),
+						page:page,
+						rows:rows
+					},
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+						              
+					success:function(data){
+						//alert(page+"页")
+						page = page+1;
+						
+						var billList = data.billList
+						
+						if(billList.length<=0||billList==null||billList==""){
+							isHasData = true;
+						}
+						
+						//alert()
+						for(var i=0;i<billList.length;i++){
+							var bill = billList[i];
+							$("#con").append('<div class="mui-card">'+
+										'<div class="mui-card-header">记账记录：'+bill.title+"消费："+bill.amount+"元"+'</div>'+
+										'<div class="mui-card-content">'+
+										'<div class="mui-card-header mui-card-media" style="height:40vw;background-image:url(../../images/1.jpg)"></div>'+
+										'</div>'+
+										'<div class="mui-card-footer">详情</div>'
+							)
+						}
+						
+						
+					}
+				});
+				
+				//是否还有继续可以显示的
+				
+				//停止刷新
+				//mui("#refreshContainer").pullRefresh().endPulldownToRefresh()
+			},500)
+			this.endPullupToRefresh(isHasData);
+		}
 		
-	<!--页眉，放置标题-->
-	<div class="mui-card-header">记账记录：炸酱面10</div>
-	<!--内容区-->
-	<div class="mui-card-content">
-		<div class="mui-card-header mui-card-media" style="height:40vw;background-image:url(images/2.jpg)"></div>
-	</div>
-	<!--页脚，放置补充信息或支持的操作-->
-	<div class="mui-card-footer">详情</div>
-	</div>
-
+		  mui.plusReady(function () {
+		    mui.ajax(plus.storage.getItem('url')+'bill/getBillByLoginId',{
+		    	data:{
+		    		login_id:plus.storage.getItem('login_id').toString(),
+					page:page,
+					rows:rows
+		    	},
+		    	type:'post',//HTTP请求类型
+		    	timeout:10000,//超时时间设置为10秒；
+		    		              
+		    	success:function(data){
+		    		page = page+1;
+		    		var billList = data.billList
+		    		//alert()
+		    		for(var i=0;i<billList.length;i++){
+		    			var bill = billList[i];
+		    			$("#con").append('<div class="mui-card">'+
+		    						'<div class="mui-card-header">记账记录：'+bill.title+bill.amount+'</div>'+
+		    						'<div class="mui-card-content">'+
+									'<div class="mui-card-header mui-card-media" style="height:40vw;background-image:url(D:/data/webs/uploadFiles/2020-03-28/files--2020-03-28-21-25-51-73h3.png;)"></div>'+
+									'</div>'+
+									'<div class="mui-card-footer">详情</div>'
+		    			)
+		    		}
+		    		
+				},
+			})
+		}) 
+	</script>
        
 </body>
 </html>

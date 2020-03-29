@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+<!-- 测试下拉加载上拉刷新没实际意义 -->
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		
+		<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll" id="con">
+				
+			</div>
+		</div>
+		<script src="../../js/mui.js"></script>
+		<script src="https://cdn.staticfile.org/jquery/3.1.1/jquery.min.js"></script>
+		
+		<script type="text/javascript">
+			var pageStart = 0;//开始数据条数
+			 var pageSize = 3;//每页显示条数
+			 var startIndex=0;
+			 var page = 1;
+			 var rows = 5;
+			 var isHasData = false;
+			mui.init({
+				
+				pullRefresh:{
+					container:"#refreshContainer",//下拉容器表标识
+					down:{
+						callback:downRefresh//必写，刷新函数
+					},
+					up:{
+						contentover:"正在加载。。。",
+						contentnomore:"没有更多数据",
+						callback:upRefresh
+					}
+				}
+			});
+			function downRefresh(){
+				console.log("ss");
+				alert("55")
+				//刷新的数据加载动作，通过第三方数据传输后进行加载
+				location.reload();
+				//停止刷新
+				mui("#refreshContainer").pullRefresh().endPulldownToRefresh()
+				
+			}
+			function upRefresh(){
+				console.log("ss");
+				setTimeout(function(){
+					mui.ajax('http://192.168.126.1:8080/bill/getBillByLoginId',{
+						data:{
+							login_id:"admin",//plus.storage.getItem('login_id')
+							page:page,
+							rows:rows
+						},
+						type:'post',//HTTP请求类型
+						timeout:10000,//超时时间设置为10秒；
+							              
+						success:function(data){
+							//alert(page+"页")
+							page = page+1;
+							
+							var billList = data.billList
+							
+							if(billList.length<=0||billList==null||billList==""){
+								isHasData = true;
+							}
+							
+							//alert()
+							for(var i=0;i<billList.length;i++){
+								var bill = billList[i];
+								$("#con").append('<div class="mui-card">'+
+											'<div class="mui-card-header">记账记录：'+bill.title+"消费："+bill.amount+"元"+'</div>'+
+											'<div class="mui-card-content">'+
+											'<div class="mui-card-header mui-card-media" style="height:40vw;background-image:url(../../images/1.jpg)"></div>'+
+											'</div>'+
+											'<div class="mui-card-footer">详情</div>'
+								)
+							}
+							
+							
+						}
+					});
+					
+					//是否还有继续可以显示的
+					
+					//停止刷新
+					//mui("#refreshContainer").pullRefresh().endPulldownToRefresh()
+				},500)
+				this.endPullupToRefresh(isHasData);
+			}
+			
+			  mui.plusReady(function () {
+			    mui.ajax('http://192.168.126.1:8080/bill/getBillByLoginId',{
+			    	data:{
+			    		login_id:"admin",//plus.storage.getItem('login_id')
+						page:page,
+						rows:rows
+			    	},
+			    	type:'post',//HTTP请求类型
+			    	timeout:10000,//超时时间设置为10秒；
+			    		              
+			    	success:function(data){
+			    		page = page+1;
+			    		var billList = data.billList
+			    		//alert()
+			    		for(var i=0;i<billList.length;i++){
+			    			var bill = billList[i];
+			    			$("#con").append('<div class="mui-card">'+
+			    						'<div class="mui-card-header">记账记录：'+bill.title+bill.amount+'</div>'+
+			    						'<div class="mui-card-content">'+
+										'<div class="mui-card-header mui-card-media" style="height:40vw;background-image:url(../../images/1.jpg)"></div>'+
+										'</div>'+
+										'<div class="mui-card-footer">详情</div>'
+			    			)
+			    		}
+			    		
+					},
+				})
+			}) 
+		</script>
+	</body>
+
+</html>

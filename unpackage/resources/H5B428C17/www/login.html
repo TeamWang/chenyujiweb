@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/gloable.css" rel="stylesheet" />
+	</head>
+	
+
+	<body>
+		<header class="mui-bar mui-bar-nav" style="background-color: #007AFF;">
+			<h1 id="title" class="mui-title">晨宇记</h1>
+		</header>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function(){
+				/*49.233.79.220*/
+				/* 192.168.126.1 */
+				//plus.storage.setItem("url",'http://192.168.126.1:8080/');
+				plus.storage.setItem("url",'http://49.233.79.220:8080/');
+			});
+			
+			
+			
+			function login(){
+				var login_id = mui("#login_id")[0].value; 
+				var password = mui("#password")[0].value;
+				
+				mui.ajax(plus.storage.getItem('url')+'admin/login',{
+					data:{
+						login_id:login_id,
+						password:password,
+						
+					},
+					
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+						              
+					success:function(data){
+						
+						if(data.status=="success"){
+							plus.storage.setItem("login_id",data.login_id);
+							
+							mui.openWindow({
+								url:'parent.html',
+								
+							})
+						}else{
+							alert("用户名或密码错误");
+						}
+					},
+					
+				})
+			}
+			/**
+			 * 前往注册页面
+			 */
+			function register (){
+				mui.openWindow({
+            		url: './register.html', //通过URL传参
+				})
+			}
+			
+			
+			
+		</script>
+		
+		
+		<form class="mui-input-group" style="top: 45px;">
+		    <div class="mui-input-row">
+		        <label>用户名</label>
+		    <input type="text" class="mui-input-clear" placeholder="请输入登录账号" id="login_id">
+		    </div>
+		    <div class="mui-input-row">
+		        <label>密码</label>
+		        <input type="password" class="mui-input-password" placeholder="请输入密码" id="password">
+		    </div>
+		    <div class="mui-button-row">
+		        <button type="button" class="mui-btn mui-btn-primary" onclick="login()">确认</button>
+		        <button type="button" class="mui-btn mui-btn-danger" onclick="register()">注册</button>
+		    </div>
+		    <span class="mui-icon iconfont icon-gouwu"></span> 
+		</form>
+	</body>
+
+</html>

@@ -1,0 +1,172 @@
+<!doctype html>
+<html>
+<!--测试手机上传图片功能的工具html没实际作用-->
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		
+		<script src="../../js/mui.min.js"></script>
+		<script src="https://cdn.staticfile.org/jquery/3.1.1/jquery.min.js"></script>
+
+		
+		<header class="mui-bar mui-bar-nav">
+		            <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		            <h1 class="mui-title">上传照片</h1>
+		            <a class="mui-icon-right-nav mui-pull-right">
+		                <span id="headImage" class="mui-icon mui-icon-camera"></span>
+		            </a>
+		            <a class="mui-icon-right-nav mui-pull-right">
+		                <span id="uploadImage" class="mui-icon mui-icon-upload"></span>
+		            </a>
+		        </header> 
+		        <div class="mui-content" style="background-color:#fff">
+		            <!-- 图片容器 -->
+		            <ul id="imgs" class="mui-table-view mui-grid-view">
+		                <li class="mui-table-view-cell mui-media mui-col-xs-4">
+		                    <!-- <img class="mui-media-object" src="images/60x60.gif">
+		                    <span class="mui-icon mui-icon-trash deleteBtn" onclick="deleteImg(event)"></span> -->
+		                </li>
+		                 
+		            </ul>
+		        </div>
+				<script type="text/javascript">
+				            mui.init();
+				            var fileArr = [];
+				            mui.init({
+				                swipeBack: true //启用右滑关闭功能
+				            });
+				            document.getElementById('headImage').addEventListener('tap', function() {
+				                if (mui.os.plus) {
+				                    var buttonTit = [{
+				                        title: "拍照"
+				                    }, {
+				                        title: "从手机相册选择"
+				                    }];
+				 
+				                    plus.nativeUI.actionSheet({
+				                        title: "上传图片",
+				                        cancel: "取消",
+				                        buttons: buttonTit
+				                    }, function(b) { /*actionSheet 按钮点击事件*/
+				                        switch (b.index) {
+				                            case 0:
+				                                break;
+				                            case 1:
+				                                getImage(); /*拍照*/
+				                                break;
+				                            case 2:
+				                                galleryImg(); /*打开相册*/
+				                                break;
+				                            default:
+				                                break;
+				                        }
+				                    })
+				                }
+				            }, false);
+				 
+				 
+				            // 拍照获取图片  
+				            function getImage() {
+				                var c = plus.camera.getCamera();
+				                c.captureImage(function(e) {
+				                    plus.io.resolveLocalFileSystemURL(e, function(entry) {
+				                        var imgSrc = entry.toLocalURL() + "?version=" + new Date().getTime(); //拿到图片路径  
+				                        setFile(imgSrc);
+				                        setHtml(imgSrc);
+				                    }, function(e) {
+				                        console.log("读取拍照文件错误：" + e.message);
+				                    });
+				                }, function(s) {
+				                    console.log("error" + s.message);
+				                }, {
+				                    filename: "_doc/camera/"
+				                })
+				            }
+				            // 从相册中选择图片   
+				            function galleryImg() {
+				                // 从相册中选择图片  
+				                plus.gallery.pick(function(e) {
+				                    for (var i in e.files) {
+				                        var fileSrc = e.files[i];
+				                        setFile(fileSrc);
+				                        setHtml(fileSrc);
+				                    }
+				                }, function(e) {
+				                    console.log("取消选择图片");
+				                }, {
+				                    filter: "image",
+				                    multiple: true,
+				                    //maximum: 5,
+				                    system: false,
+				                    onmaxed: function() {
+				                        plus.nativeUI.alert('最多只能选择5张图片');
+				                    }
+				                });
+				            }
+				 
+				            //删除当前照片--删除当前元素的整个父级元素
+				            function deleteImg(event) {
+				                var obj = event.srcElement;
+				                obj.parentElement.remove();
+				            }
+				 
+				            function setHtml(path) {
+								alert("--")
+				                var str = '';
+				                str = '<li class="mui-table-view-cell mui-media mui-col-xs-4">' +
+				                    '<img class="mui-media-object" src="' + path + '">' +
+				                    '<span class="mui-icon mui-icon-trash deleteBtn" onclick="deleteImg(event)"></span>' +
+				                    '</li>';
+				                jQuery("#imgs").append(str);
+				            }
+				 
+				            function setFile(fileSrc) {
+				                var image = new Image();
+				                image.src = fileSrc;
+				                fileArr.push(image);
+				            }
+				             
+				            document.getElementById('uploadImage').addEventListener('tap', function() {
+							alert("---")
+								
+				                var files = fileArr;
+								
+				                var wt = plus.nativeUI.showWaiting();
+								//下面的ip本机测试的时候也不能 写127.0.0.1或者localhost只能是真实ip不知道为什么
+				                var task = plus.uploader.createUpload('http://192.168.21.1:8080/bill/addImg', {
+				                        method: "POST"
+				                    },
+				                    function(t, status) {
+										console.log(t.responseText)
+										//上传完成
+				                        if (status == 200) {
+				                            alert("上传成功：" + t.responseText);
+				                            wt.close(); //关闭等待提示按钮
+				                        } else {
+				                            alert("上传失败：" + status);
+				                            wt.close(); //关闭等待提示按钮
+				                        }
+				                    }
+				                );
+				                //将文件集合添加到上传队列中
+				                for (var i = 0; i < files.length; i++) {
+				                    var f = files[i];
+				                    task.addFile(f.src, {
+				                        key: i
+				                    });
+				                }
+				                //传其他的参数 如备注
+				                //添加其他参数
+				                //遍历5个input框
+				                task.addData("comment", "test".toString());
+				                task.start();
+				            });
+				        </script>
+	</body>
+
+</html>

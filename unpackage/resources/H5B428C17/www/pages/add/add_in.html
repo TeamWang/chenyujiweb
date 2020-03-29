@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/iconfont.css" rel="stylesheet"/>
+	</head>
+
+	<body>
+		<script src="../../js/mui.min.js"></script>
+		<script src="https://cdn.staticfile.org/jquery/3.1.1/jquery.min.js"></script>
+		<script type="text/javascript">
+			
+			var fileArr = [];
+			mui.init({
+			    swipeBack: true ,//启用右滑关闭功能
+				
+			});
+			
+		</script>
+		
+		
+
+<div class="mui-content"> 
+            <ul class="mui-table-view mui-grid-view mui-grid-9" style="background-color: #B6B6B6;">
+                 <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+                    <a href="java:script" onclick="add(1)">  
+                         <span class="mui-icon iconfont icon-gouwu"></span>  
+                         <div class="mui-media-body">购物</div>
+                    </a>
+                 </li>  
+                <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+                    <a href="java:script" onclick="add(2)">  
+                         <span class="mui-icon iconfont icon-yinshi"><!-- <span class="mui-badge">5</span> --></span>  
+                         <div class="mui-media-body">饮食</div>
+                    </a>
+                </li>  
+                <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+                    <a href="java:script" onclick="add(3)">  
+                         <span class="mui-icon iconfont icon-jiaotong"></span>  
+                         <div class="mui-media-body">交通</div>
+                    </a>
+                </li>  
+                
+            </ul>
+        </div>
+	</body>
+	
+	<div id="sheet1" class="mui-popover mui-popover-bottom mui-popover-action ">
+		
+		
+		 <form class="mui-input-group">
+			 
+			 
+		    <div class="mui-input-row">
+		        <label>消费描述</label>
+		    <input id="bill_title" type="text" class="mui-input-clear" placeholder="消费描述">
+		    </div>
+		    <div class="mui-input-row">
+		        <label>消费金额</label>
+		        <input id="bill_amount" type="text" class="mui-input-password" placeholder="消费金额">
+		    </div>
+			<div class="mui-input-row">
+			    <label>具体描述</label>
+			<input id="bill_content" type="text" class="mui-input-clear" placeholder="消费描述">
+			</div>
+			<div class="mui-input-row">
+				<!-- <button id="cameraImage" class=" mui-icon-right-nav mui-icon mui-icon-camera">照相机</button>
+				<button id="phoneImage" class=" mui-icon-right-nav mui-icon mui-icon-camera">本地照片</button> -->
+				<button type="button" class="mui-btn mui-btn-danger" onclick="back()">取消</button>&nbsp;
+				<button type="button" class="mui-btn mui-btn-primary" onclick="addBillSimple()">确认</button>&nbsp;
+				
+				<button onclick="gotoAddDetailBill()" type="button" class="mui-btn mui-btn-primary" >详细录入</button>&nbsp;&nbsp;&nbsp;
+			    <!-- <span id="headImage" class="mui-icon mui-icon-camera">上传照片</span> -->
+				
+			</div>
+			
+			
+		    
+			
+			
+		</form>
+	   
+	    
+	</div>
+	
+	<script>
+		function add(bill_type_id){
+		
+			
+			plus.storage.setItem("bill_type_id",bill_type_id.toString());
+			mui('#sheet1').popover('toggle');
+		}
+		function back(){
+			mui('#sheet1').popover('toggle');
+			
+		}
+		function gotoAddDetailBill(){
+			
+			mui.openWindow({
+				url:'add_detail_bill.html',
+			})
+		}
+		function addBillSimple(){
+			
+			mui.ajax(plus.storage.getItem('url')+'bill/addBillSimple',{
+				data:{
+					bill_title:mui("#bill_title")[0].value,
+					bill_amount:mui("#bill_amount")[0].value,
+					bill_content:mui("#bill_content")[0].value,
+					login_id:plus.storage.getItem('login_id'),
+					bill_type_id:plus.storage.getItem('bill_type_id'),
+					
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+					success:function(data){
+						if(data.status=="success"){
+							alert("录入账单成功");
+							
+						}else{
+							alert("录入账单失败");
+						}
+					}
+					
+				},
+			})
+		}
+		
+	</script>
+
+</html>
